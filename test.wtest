@@ -1,0 +1,60 @@
+import camion.*
+import cosas.*
+import almacen.*
+import caminos.*
+
+describe "Camión de transporte" {
+    
+    test "Carga y descarga de cosas" {
+        camion.cargar(knightRider)
+        assert.equals([knightRider], camion.cosas())
+
+        camion.descargar(knightRider)
+        assert.equals([], camion.cosas())
+    }
+
+    test "Verificar si todo el peso es par" {
+        camion.cargar(paqueteDeLadrillos)
+        // si cargo un paquete de ladrillos son 12*2 = 24 es par
+        assert.that(camion.todoPesoPar())
+    }
+
+    test "Buscar cosa que pesa 500 kilos" {
+        camion.cargar(knightRider)
+        assert.that(camion.hayAlgunoQuePesa(500))
+    }
+
+    test "Encontrar cosa de nivel de peligrosidad 10" {
+        camion.cargar(knightRider)
+        assert.equals(knightRider, camion.elDelNivel(10))
+    }
+
+    test "Calcular peso total" {
+        camion.cargar(knightRider)
+        assert.equals(1500, camion.pesoTotal()) 
+    }
+
+    test "Comprobar si el camión está excedido de peso" {
+        camion.cargar(bumblebee)
+        camion.cargar(paqueteDeLadrillos)
+        assert.notThat(camion.excedidoDePeso())
+    }
+
+    test "Objetos que superan nivel de peligrosidad 15" {
+        camion.cargar(knightRider)
+        camion.cargar(bumblebee)
+        assert.that(camion.objetosQueSuperanPeligrosidad(15).isEmpty()) //esta vacía porque no existe
+    }
+
+    test "Verificar si puede circular por ruta 9" {
+        camion.cargar(knightRider)
+        assert.that(camion.puedeCircularEnRuta(11)) 
+    }
+
+    test "Cosa más pesada" {
+        camion.cargar(bumblebee)
+        camion.cargar(knightRider)
+        assert.equals(bumblebee, camion.cosaMasPesada())
+    }
+
+}
