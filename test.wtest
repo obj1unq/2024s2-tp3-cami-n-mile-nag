@@ -46,23 +46,15 @@ describe "Camión de transporte" {
         assert.that(camion.objetosQueSuperanPeligrosidad(15).isEmpty()) //esta vacía porque no existe
     }
 
-/*  //falla este test, me da falso cuando me debería dar verdadero
-
     test "Verificar si puede circular por ruta 9" {
         camion.cargar(knightRider)
         assert.that(camion.puedeCircularEnRuta(11)) 
     }
-
-    //no sé si no estoy haciendo bien la verificación o tengo un error en otra parte que no puedo ver
-
-*/
 
     test "Cosa más pesada" {
         camion.cargar(bumblebee)
         camion.cargar(knightRider)
         assert.equals(bumblebee, camion.cosaMasPesada())
     }
-
-// creo que también me vendría bien testear un par de cosas mas, pero no puedo establecer un criterio para decidir que hacer
 
 }

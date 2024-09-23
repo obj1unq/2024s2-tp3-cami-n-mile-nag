@@ -32,39 +32,43 @@ object robot {
 }
 
 object paqueteDeLadrillos {
-	var property cantidadDeLadrillos = 0
+	var cantidadDeLadrillos = 0
 	
 	method peso() = 2 * cantidadDeLadrillos
 	
 	method nivelDePeligrosidad() = 2
 	
+	method cantidadDeLadrillos() = cantidadDeLadrillos
+	
 	method bulto() = self.bultoSegunCantidadDeLadrillos()
 	
 	method bultoSegunCantidadDeLadrillos() {
-		if (self.cantidadDeLadrillos() <= 100) {
+		if (cantidadDeLadrillos <= 100) {
 			return 1
-		} else {
-			if (self.cantidadDeLadrillos() <= 300) {
-				return 2
-			} else {
-				return 3
-			}
 		}
+		if (cantidadDeLadrillos <= 300) {
+			return 2
+		}
+		return 3
 	}
 	
 	method serCargada() {
-		self.cantidadDeLadrillos(12)
+		cantidadDeLadrillos = cantidadDeLadrillos + 12
 	}
 }
 
 object arenaAGranel {
-	var property peso = 0
+	var peso = 0
 	const property bulto = 1
 	
+	method peso() {
+	  return peso
+	}
+
 	method nivelDePeligrosidad() = 1
 	
 	method serCargada() {
-		self.peso(20)
+		peso += 20
 	}
 }
 
@@ -126,12 +130,16 @@ object contenedorPorturario {
 
 object residuosRadioactivos {
 	const property bulto = 1
-	var property peso = 0
+	var peso = 0
 	
+	method peso() {
+	  return peso
+	}
+
 	method nivelDePeligrosidad() = 200
 	
 	method serCargada() {
-		self.peso(15)
+		peso +=15
 	}
 }
 

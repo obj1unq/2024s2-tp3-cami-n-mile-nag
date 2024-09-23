@@ -1,17 +1,15 @@
 import camion.*
 
 object ruta9 {
+    const nivelDePeligrosidad = 11
+
     method permiteTransporte(camion) {
-        return camion.puedeCircularEnRuta(11)
+        return camion.puedeCircularEnRuta(nivelDePeligrosidad)
     }
 }
 
 object caminoVecinal {
-    var pesoMaximo = 0
-
-    method pesoMaximo(peso) {
-        pesoMaximo = peso
-    }
+    var property pesoMaximo = 0
 
     method permiteTransporte(camion) {
         return camion.pesoTotal() <= pesoMaximo

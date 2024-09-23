@@ -6,7 +6,8 @@ object camion {
 	const property cosas = []
 	const pesoMaximo = 2500
 	var cantTotalDeBultos = 0
-	
+	const tara = 100
+
 	method cargar(unaCosa) {
 		cosas.add(unaCosa)
 		unaCosa.serCargada()
@@ -24,7 +25,7 @@ object camion {
 		{ cosa => cosa.nivelDePeligrosidad() == nivel }
 	)
 	
-	method pesoTotal() = cosas.sum({ cosa => cosa.peso() }) + 1000
+	method pesoTotal() = cosas.sum({ cosa => cosa.peso() }) + tara
 	
 	method excedidoDePeso() = self.pesoTotal() >= pesoMaximo
 	
@@ -32,23 +33,32 @@ object camion {
 		{ cosa => cosa.nivelDePeligrosidad() == nivel }
 	)
 	
-	method objetoMasPeligrosoQue(algunaCosa) = cosas.filter(
-		{ cosa => cosa.nivelDePeligrosidad() < algunaCosa.nivelDePeligrosidad() }
-	)
+	//method objetoMasPeligrosoQue(algunaCosa) = cosas.filter(
+	//	{ cosa => cosa.nivelDePeligrosidad() < algunaCosa.nivelDePeligrosidad() }
+	//)
 	
+	method objetoMasPeligrosoQue(algunaCosa) = cosas.filter(
+		{ cosa => self.objetosQueSuperanPeligrosidad(cosa.nivelDePeligrosidad()) }
+	)
+
+	//method puedeCircularEnRuta(
+	//	nivelMaximoDePeligrosidad
+	//) = (!self.excedidoDePeso()) and (!self.ningunObjetoEsMuyPeligroso(
+	//	nivelMaximoDePeligrosidad
+	//))
+
 	method puedeCircularEnRuta(
 		nivelMaximoDePeligrosidad
-	) = (!self.excedidoDePeso()) and (!self.ningunObjetoEsMuyPeligroso(
-		nivelMaximoDePeligrosidad
-	))
+	 ) = (!self.excedidoDePeso()) and (self.objetosQueSuperanPeligrosidad(nivelMaximoDePeligrosidad).isEmpty())
+
+	
 	
 	method ningunObjetoEsMuyPeligroso(nivelMaximoDePeligrosidad) = cosas.all(
 		{ cosa => cosa.nivelDePeligrosidad() <= nivelMaximoDePeligrosidad }
 	)
 	
-	method tieneAlgoQuePesaEntre(min, max) = cosas.any(
-		{ cosa => (cosa.peso() > min) and (cosa.peso() < max) }
-	) //CONSULTA, si la lista es vacía esto es un error. 
+	method tieneAlgoQuePesaEntre(min, max) = (self.pesos().between(min, max)) 
+	//CONSULTA, si la lista es vacía esto es un error. 
 	
 	//como puedo hacer para que funcione? debería agarrar el error?
 	method cosaMasPesada() = cosas.max({ cosa => cosa.peso() })
@@ -96,7 +106,7 @@ object camion {
 	}
 	
 	method llegadaADestino(destino) {
-		cosas.foreach({ cosa => almacen.agregarCosa(cosa) })
+		destino.agregarCosas(cosas)
 		self.vaciarCamion()
 	}
 	
